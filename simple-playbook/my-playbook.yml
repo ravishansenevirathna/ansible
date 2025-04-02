@@ -1,0 +1,32 @@
+---
+- name: Update packages and install Docker on EC2 instance
+  hosts: ec2_nodes
+  remote_user: root
+  become: yes
+
+  tasks:
+    - name: Run apt update
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+
+    - name: Start and Enable Docker Service
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Check Docker version
+      ansible.builtin.command: docker --version
+      register: docker_version_output
+      changed_when: false
+      failed_when: false
+
+    - name: Display Docker Version
+      ansible.builtin.debug:
+        msg: "Docker version :  {{ docker_version_output.stdout }} hello world"
+

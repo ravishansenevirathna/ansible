@@ -1,0 +1,4 @@
+---
+# defaults file for ec2-create
+type: t2.micro
+image: ami-04b70fa74e45c3917
